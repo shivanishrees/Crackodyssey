@@ -1,0 +1,159 @@
+/* ============================================
+   DASHBOARD SCREEN
+   ============================================ */
+
+#screen-dashboard {
+    background: var(--bg-dark);
+}
+
+/* Top Bar */
+.dashboard-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gap-md) var(--gap-lg);
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--stone);
+    flex-shrink: 0;
+}
+
+.topbar-left .logo-small {
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    color: var(--gold);
+}
+
+.topbar-username {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+}
+
+.coin-display, .xp-display {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--gold);
+}
+.xp-display { color: var(--crystal-blue); }
+
+/* Dashboard Content */
+.dashboard-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--gap-lg);
+    gap: var(--gap-lg);
+    overflow-y: auto;
+}
+
+/* Profile Card */
+.profile-card {
+    background: var(--bg-card);
+    border: 2px solid var(--stone);
+    border-radius: var(--radius-lg);
+    padding: var(--gap-lg);
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.4s ease;
+}
+
+.profile-avatar {
+    font-size: 4rem;
+    margin-bottom: var(--gap-md);
+    animation: float 3s ease-in-out infinite;
+}
+
+.profile-card h2 {
+    font-family: var(--font-heading);
+    color: var(--gold);
+    margin-bottom: var(--gap-md);
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: var(--gap-md);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--text-primary);
+}
+
+/* Progress Card */
+.progress-card {
+    background: var(--bg-card);
+    border: 2px solid var(--stone);
+    border-radius: var(--radius-lg);
+    padding: var(--gap-lg);
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.5s ease;
+}
+
+.progress-card h3 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    margin-bottom: var(--gap-md);
+}
+
+.progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gap-sm) 0;
+    border-bottom: 1px solid var(--stone);
+    color: var(--text-secondary);
+}
+.progress-row:last-child { border-bottom: none; }
+
+.progress-row .progress-bar {
+    width: 120px;
+}
+
+/* Map Button */
+.btn-map {
+    position: fixed;
+    top: 80px;
+    right: var(--gap-lg);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: var(--bg-card);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+.btn-map:hover {
+    background: var(--gold-dark);
+    transform: scale(1.1);
+}

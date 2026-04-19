@@ -1,0 +1,112 @@
+/* ============================================
+   START GATE SCREEN
+   ============================================ */
+
+#screen-start-gate {
+    background: radial-gradient(ellipse at center bottom, #1a1020 0%, #0a0a0f 70%);
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Stone texture overlay */
+#screen-start-gate::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 40px,
+            rgba(255,255,255,0.02) 40px,
+            rgba(255,255,255,0.02) 41px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 40px,
+            rgba(255,255,255,0.02) 40px,
+            rgba(255,255,255,0.02) 41px
+        );
+    pointer-events: none;
+}
+
+/* Animated Torches */
+.torch {
+    position: absolute;
+    top: 15%;
+    width: 20px;
+    height: 60px;
+    background: linear-gradient(to top, #4a3520, #2a1a10);
+    border-radius: 0 0 4px 4px;
+}
+.torch::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 36px;
+    background: radial-gradient(ellipse at bottom, #ff6600 0%, #ff4400 40%, transparent 70%);
+    border-radius: 50% 50% 20% 20%;
+    animation: flicker 0.8s ease-in-out infinite alternate;
+}
+.torch::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(255, 150, 50, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+.torch-left { left: 15%; }
+.torch-right { right: 15%; }
+
+/* Gate Container */
+.gate-container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: var(--gap-xl);
+    max-width: 420px;
+    width: 90%;
+}
+
+.game-title {
+    font-family: var(--font-title);
+    font-size: 3rem;
+    color: var(--gold);
+    text-shadow:
+        0 0 20px rgba(240, 165, 0, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: var(--gap-sm);
+    animation: float 3s ease-in-out infinite;
+}
+
+.game-subtitle {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: var(--gap-xl);
+}
+
+.gate-panel {
+    animation: fadeIn 0.4s ease;
+}
+
+.gate-panel h2 {
+    font-family: var(--font-heading);
+    color: var(--gold);
+    margin-bottom: var(--gap-lg);
+    font-size: 1.4rem;
+}

@@ -1,0 +1,304 @@
+/* ============================================
+   CRACK ODYSSEY – DUNGEON THEME
+   ============================================ */
+
+:root {
+    /* Dungeon Colors */
+    --bg-dark: #0a0a0f;
+    --bg-medium: #151520;
+    --bg-card: #1a1a2e;
+    --bg-card-hover: #222240;
+    --stone: #2a2a3a;
+    --stone-light: #3a3a50;
+    --gold: #f0a500;
+    --gold-dark: #c78800;
+    --gold-glow: #ffd700;
+    --fire-orange: #ff6600;
+    --fire-red: #cc3300;
+    --emerald: #00cc66;
+    --emerald-dark: #009944;
+    --crystal-blue: #4488ff;
+    --purple: #8844cc;
+    --text-primary: #e8e8f0;
+    --text-secondary: #a0a0b8;
+    --text-muted: #666680;
+    --danger: #ff4444;
+    --success: #44cc44;
+
+    /* Fonts */
+    --font-title: 'MedievalSharp', cursive;
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Open Sans', sans-serif;
+
+    /* Spacing */
+    --gap-sm: 8px;
+    --gap-md: 16px;
+    --gap-lg: 24px;
+    --gap-xl: 40px;
+    --radius: 8px;
+    --radius-lg: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-body);
+    background: var(--bg-dark);
+    color: var(--text-primary);
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden { display: none !important; }
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 2px solid var(--stone-light);
+    border-radius: var(--radius);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    width: 100%;
+    margin-bottom: var(--gap-sm);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: var(--bg-dark);
+    border-color: var(--gold);
+    font-weight: 700;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--gold), var(--gold-glow));
+    box-shadow: 0 0 20px rgba(240, 165, 0, 0.4);
+}
+
+.btn-secondary {
+    background: var(--stone);
+    color: var(--text-primary);
+    border-color: var(--stone-light);
+}
+.btn-secondary:hover {
+    background: var(--stone-light);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.btn-adventure {
+    background: linear-gradient(135deg, var(--fire-red), var(--fire-orange));
+    color: #fff;
+    border-color: var(--fire-orange);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.btn-adventure:hover {
+    box-shadow: 0 0 25px rgba(255, 102, 0, 0.5);
+    transform: scale(1.02);
+}
+
+.btn-link {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    text-decoration: underline;
+    cursor: pointer;
+}
+.btn-link:hover { color: var(--gold); }
+
+.btn-large {
+    padding: 16px 36px;
+    font-size: 1.2rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--stone-light);
+    color: var(--text-primary);
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+.btn-icon:hover {
+    background: var(--stone);
+    border-color: var(--gold);
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+.form-group {
+    margin-bottom: var(--gap-md);
+    text-align: left;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-family: var(--font-heading);
+}
+.form-group input {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--bg-dark);
+    border: 2px solid var(--stone-light);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.form-group input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(240, 165, 0, 0.3);
+}
+
+.error-msg {
+    color: var(--danger);
+    font-size: 0.85rem;
+    margin-bottom: var(--gap-sm);
+}
+
+/* ============================================
+   POPUPS / MODALS
+   ============================================ */
+.popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.popup.hidden { display: none !important; }
+
+.popup-content {
+    background: var(--bg-card);
+    border: 2px solid var(--gold-dark);
+    border-radius: var(--radius-lg);
+    padding: var(--gap-lg);
+    max-width: 500px;
+    width: 90%;
+    max-height: 82vh;
+    overflow-y: auto;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(240, 165, 0, 0.2);
+}
+
+.popup-content h3 {
+    font-family: var(--font-heading);
+    color: var(--gold);
+    margin-bottom: var(--gap-md);
+    font-size: 1.3rem;
+}
+
+.popup-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--gap-md);
+    line-height: 1.6;
+    white-space: pre-line;
+    text-align: left;
+}
+
+.popup-example {
+    background: var(--bg-dark);
+    border-left: 3px solid var(--emerald);
+    padding: var(--gap-md);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: var(--gap-md);
+    text-align: left;
+}
+.popup-example strong {
+    color: var(--emerald);
+}
+.popup-example p {
+    margin-bottom: 0;
+    font-style: italic;
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: var(--stone);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--emerald-dark), var(--emerald));
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+    background: var(--stone-light);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(240, 165, 0, 0.3); }
+    50% { box-shadow: 0 0 25px rgba(240, 165, 0, 0.6); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

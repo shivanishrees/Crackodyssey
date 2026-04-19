@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crack Odyssey – Dungeon of Knowledge</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2694;</text></svg>">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/start-gate.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/level-map.css">
+    <link rel="stylesheet" href="css/maze.css">
+    <link rel="stylesheet" href="css/quiz.css">
+    <link rel="stylesheet" href="css/level3.css">
+    <link rel="stylesheet" href="css/level4.css">
+    <link rel="stylesheet" href="css/level5.css">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Start Gate Screen -->
+        <div id="screen-start-gate" class="screen active">
+            <div class="torch torch-left"></div>
+            <div class="torch torch-right"></div>
+            <div class="gate-container">
+                <h1 class="game-title">⚔️ Crack Odyssey</h1>
+                <p class="game-subtitle">Dungeon of Knowledge</p>
+
+                <!-- Main Menu -->
+                <div id="start-menu" class="gate-panel">
+                    <button class="btn btn-primary" id="btn-login-show">🔑 Login</button>
+                    <button class="btn btn-secondary" id="btn-register-show">📜 Register</button>
+                    <button class="btn btn-adventure" id="btn-start-adventure">⚔️ Start Adventure</button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="login-form" class="gate-panel hidden">
+                    <h2>🔑 Enter the Dungeon</h2>
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" placeholder="Enter username" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter password">
+                    </div>
+                    <p id="login-error" class="error-msg hidden"></p>
+                    <button class="btn btn-primary" id="btn-login-submit">Enter</button>
+                    <button class="btn btn-link" id="btn-login-back">← Back</button>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register-form" class="gate-panel hidden">
+                    <h2>📜 Create Your Legend</h2>
+                    <div class="form-group">
+                        <label for="reg-username">Username</label>
+                        <input type="text" id="reg-username" placeholder="Choose a username" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="Choose a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm Password</label>
+                        <input type="password" id="reg-confirm" placeholder="Confirm password">
+                    </div>
+                    <p id="register-error" class="error-msg hidden"></p>
+                    <button class="btn btn-primary" id="btn-register-submit">Create Account</button>
+                    <button class="btn btn-link" id="btn-register-back">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div id="screen-dashboard" class="screen">
+            <div class="dashboard-topbar">
+                <div class="topbar-left">
+                    <span class="logo-small">⚔️ Crack Odyssey</span>
+                </div>
+                <div class="topbar-center">
+                    <span id="dash-username" class="topbar-username"></span>
+                </div>
+                <div class="topbar-right">
+                    <span class="coin-display">🪙 <span id="dash-coins">0</span></span>
+                    <span class="xp-display">⭐ <span id="dash-xp">0</span> XP</span>
+                    <button class="btn-icon" id="btn-settings" title="Settings">⚙️</button>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="profile-card">
+                    <div class="profile-avatar" id="dash-avatar">🧙</div>
+                    <h2 id="dash-player-name"></h2>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-label">Level</span>
+                            <span class="stat-value" id="dash-level">1</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Total XP</span>
+                            <span class="stat-value" id="dash-total-xp">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Rank</span>
+                            <span class="stat-value" id="dash-rank">Novice</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>📊 Progress</h3>
+                    <div class="progress-row">
+                        <span>Levels Completed</span>
+                        <span id="dash-levels-done">0 / 5</span>
+                    </div>
+                    <div class="progress-row">
+                        <span>Maze Progress</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="dash-maze-progress" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-row">
+                        <span>Achievements</span>
+                        <span id="dash-achievements">0</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-adventure btn-large" id="btn-continue-adventure">⚔️ Continue Adventure</button>
+            </div>
+
+            <button class="btn-map" id="btn-open-map" title="Level Map">🗺️</button>
+        </div>
+
+        <!-- Level Map Screen -->
+        <div id="screen-level-map" class="screen">
+            <div class="map-header">
+                <button class="btn-icon" id="btn-map-back">← Back</button>
+                <h2>🗺️ Dungeon Map</h2>
+                <div></div>
+            </div>
+            <div class="map-container" id="level-map-container">
+                <!-- Level nodes generated by JS -->
+            </div>
+        </div>
+
+        <!-- Maze Screen -->
+        <div id="screen-maze" class="screen">
+            <div class="maze-hud">
+                <button class="btn-icon" id="btn-maze-back">← Exit</button>
+                <h3 id="maze-level-title">Level 1</h3>
+                <div class="maze-rewards-count">
+                    <span>💎 <span id="maze-collected">0</span> / <span id="maze-total">15</span></span>
+                </div>
+            </div>
+            <div class="maze-area">
+                <canvas id="maze-canvas"></canvas>
+            </div>
+            <div class="maze-controls">
+                <button class="ctrl-btn" data-dir="up">▲</button>
+                <div class="ctrl-row">
+                    <button class="ctrl-btn" data-dir="left">◀</button>
+                    <button class="ctrl-btn" data-dir="down">▼</button>
+                    <button class="ctrl-btn" data-dir="right">▶</button>
+                </div>
+            </div>
+            <!-- Learning Popup -->
+            <div id="learning-popup" class="popup hidden">
+                <div class="popup-content">
+                    <h3 id="popup-title"></h3>
+                    <p id="popup-explanation"></p>
+                    <div class="popup-example">
+                        <strong>Example:</strong>
+                        <p id="popup-example"></p>
+                    </div>
+                    <button class="btn btn-primary" id="popup-close">Got it! ✓</button>
+                </div>
+            </div>
+            <!-- Exit Unlocked Popup -->
+            <div id="exit-popup" class="popup hidden">
+                <div class="popup-content">
+                    <h3>🚪 Exit Unlocked!</h3>
+                    <p>You've collected all the knowledge gems! The exit door is now open.</p>
+                    <button class="btn btn-primary" id="exit-popup-close">Continue →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="screen-quiz" class="screen">
+            <div class="quiz-header">
+                <h2 id="quiz-title">Level 1 – Knowledge Test</h2>
+                <div class="quiz-progress">
+                    Question <span id="quiz-current">1</span> / <span id="quiz-total">5</span>
+                </div>
+            </div>
+            <div class="quiz-body">
+                <div class="quiz-question" id="quiz-question"></div>
+                <div class="quiz-options" id="quiz-options">
+                    <!-- Options generated by JS -->
+                </div>
+                <p id="quiz-feedback" class="hidden"></p>
+                <p id="quiz-explanation" class="hidden"></p>
+                <button class="btn btn-primary hidden" id="btn-quiz-next">Next →</button>
+            </div>
+            <!-- Quiz Complete -->
+            <div id="quiz-complete" class="hidden">
+                <div class="quiz-result">
+                    <h2 id="quiz-result-title">🏆 Level Complete!</h2>
+                    <div id="quiz-stars" class="quiz-stars"></div>
+                    <p>Score: <span id="quiz-score"></span></p>
+                    <p id="quiz-result-msg" class="quiz-result-msg"></p>
+                    <p>XP Earned: <span id="quiz-xp-earned"></span></p>
+                    <button class="btn btn-adventure" id="btn-quiz-finish">Continue →</button>
+                    <button class="btn btn-secondary hidden" id="btn-quiz-retry">🔄 Try Again</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 3 Screen: Security Audit -->
+        <div id="screen-level3" class="screen">
+
+            <!-- HUD -->
+            <div class="level3-hud">
+                <button class="btn-icon" id="btn-level3-back">← Exit</button>
+                <div class="l3-hud-center">
+                    <h3>Level 3 – Security Audit</h3>
+                    <div class="level3-step-badge">
+                        Round <span id="l3-round-num">1</span>/3 &nbsp;·&nbsp;
+                        Step <span id="l3-step">0</span> / <span id="l3-steps-total">3</span>
+                    </div>
+                </div>
+                <div class="l3-threat-hud">
+                    <span class="l3-threat-hud-label">⚡ Threat</span>
+                    <span class="l3-threat-hud-val"><span id="l3-threat-pct">0</span>%</span>
+                </div>
+            </div>
+
+            <!-- Round Progress Bar -->
+            <div class="l3-round-progress">
+                <div class="l3-round-node active" id="l3-rnode-1">
+                    <span class="l3-rnode-icon">🏦</span>
+                    <span class="l3-rnode-label">Account</span>
+                </div>
+                <div class="l3-round-line" id="l3-rline-1"></div>
+                <div class="l3-round-node" id="l3-rnode-2">
+                    <span class="l3-rnode-icon">📚</span>
+                    <span class="l3-rnode-label">Student</span>
+                </div>
+                <div class="l3-round-line" id="l3-rline-2"></div>
+                <div class="l3-round-node" id="l3-rnode-3">
+                    <span class="l3-rnode-icon">👔</span>
+                    <span class="l3-rnode-label">Employee</span>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="level3-content">
+
+                <!-- Left: Security Status Panel -->
+                <div class="l3-security-panel">
+                    <div class="l3-target-header">
+                        <span class="l3-target-emoji" id="l3-target-emoji">🏦</span>
+                        <div>
+                            <div class="l3-target-name" id="l3-target-name">Account System</div>
+                            <div class="l3-target-sub" id="l3-target-sub">Banking vulnerability detected!</div>
+                        </div>
+                    </div>
+
+                    <!-- Threat Meter -->
+                    <div class="l3-threat-meter">
+                        <div class="l3-threat-label-row">
+                            <span>⚡ Breach Threat Level</span>
+                            <span id="l3-threat-pct2">0%</span>
+                        </div>
+                        <div class="l3-threat-track">
+                            <div class="l3-threat-fill" id="l3-threat-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Vault -->
+                    <div class="vault-container">
+                        <div id="vault-door" class="vault-door locked">
+                            <div class="vault-ring"></div>
+                            <div class="vault-handle" id="vault-handle">🔐</div>
+                            <div class="vault-status" id="vault-status">LOCKED</div>
+                        </div>
+                        <p id="vault-warning" class="vault-warning">⚠️ System Vulnerable: Public Access Detected</p>
+                    </div>
+                </div>
+
+                <!-- Centre: Code Panel -->
+                <div class="l3-code-panel">
+                    <div class="l3-code-header">
+                        <span class="l3-code-lang">☕ Java</span>
+                        <span class="l3-code-title" id="l3-code-filename">Account.java</span>
+                    </div>
+                    <pre id="l3-code-display" class="l3-code-display">class Account {
+    public int balance;
+}</pre>
+                    <div id="l3-error-msg" class="l3-error-msg hidden">❌ Wrong order! Apply steps from top to bottom.</div>
+                </div>
+
+                <!-- Right: Actions Panel -->
+                <div class="l3-actions">
+                    <p class="l3-instruction" id="l3-instruction">Fix the vulnerability by applying encapsulation in order:</p>
+                    <div class="l3-btn-group" id="l3-btn-group">
+                        <!-- Buttons built dynamically by JS -->
+                    </div>
+                    <div class="l3-progress-bar" id="l3-progress-dots">
+                        <!-- Dots built dynamically by JS -->
+                    </div>
+                </div>
+
+            </div><!-- /level3-content -->
+
+            <!-- Round Complete Overlay (between rounds) -->
+            <div id="l3-round-complete" class="l3-round-complete hidden">
+                <div class="l3-round-card">
+                    <div class="l3-round-card-icon">✅</div>
+                    <h3>System Secured!</h3>
+                    <p id="l3-round-msg">Account class is now fully encapsulated!</p>
+                    <div class="l3-round-card-checks" id="l3-round-checks"></div>
+                    <button class="btn btn-primary" id="btn-l3-next-round">Next Target →</button>
+                </div>
+            </div>
+
+            <!-- Final Success Overlay -->
+            <div id="l3-success" class="l3-success hidden">
+                <div class="l3-success-card">
+                    <div class="l3-success-icon">🔓</div>
+                    <h2>All Systems Secured!</h2>
+                    <p>Outstanding work! You've fully encapsulated all three vulnerable classes.</p>
+                    <div class="l3-success-checks">
+                        <p>✅ Account — private balance + getBalance() / setBalance()</p>
+                        <p>✅ Student — private name & grade + getName() / setGrade()</p>
+                        <p>✅ Employee — 3 private fields + all getters & validated setters</p>
+                    </div>
+                    <div id="l3-security-score"></div>
+                    <button class="btn btn-primary" id="btn-l3-continue">Continue to Quiz →</button>
+                </div>
+            </div>
+
+        </div><!-- /screen-level3 -->
+
+
+        <!-- Level 4 Screen: Adaptive AI Boss Battle -->
+        <div id="screen-level4" class="screen">
+            <!-- HUD -->
+            <div class="l4-hud">
+                <button class="btn-icon" id="btn-level4-back">← Exit</button>
+                <h3>Level 4 – Adaptive AI Boss Battle</h3>
+                <div class="l4-turn-badge">Turn: <span id="l4-turn-count">0</span></div>
+            </div>
+
+            <!-- Battle Layout -->
+            <div class="l4-battle-layout">
+
+                <!-- Boss Area -->
+                <div class="l4-boss-area boss-fire" id="l4-boss-area">
+                    <div class="l4-boss-sprite-wrap">
+                        <span id="l4-boss-emoji">🔥</span>
+                        <span class="l4-boss-name-tag" id="l4-boss-name">Adaptive AI Boss — Fire Form</span>
+                    </div>
+                    <div class="l4-boss-hp-block">
+                        <div class="l4-hp-label-row">
+                            <span class="l4-hp-label">BOSS HP</span>
+                            <span class="l4-hp-val"><span id="l4-boss-hp-val">150</span> / 150</span>
+                        </div>
+                        <div class="l4-hp-track">
+                            <div class="l4-hp-fill" id="l4-boss-hp-bar" style="width:100%"></div>
+                        </div>
+                        <span id="l4-boss-shield" class="hidden">🛡️ Shield: 0</span>
+                    </div>
+                </div>
+
+                <!-- Player Area -->
+                <div class="l4-player-area">
+
+                    <!-- Controls Column -->
+                    <div class="l4-controls-col">
+
+                        <!-- Player HP -->
+                        <div class="l4-player-hp-row">
+                            <span class="l4-player-avatar">🧙</span>
+                            <div class="l4-player-hp-block">
+                                <div class="l4-hp-label-row">
+                                    <span class="l4-hp-label">YOUR HP</span>
+                                    <span class="l4-hp-val"><span id="l4-player-hp-val">100</span> / 100</span>
+                                </div>
+                                <div class="l4-hp-track">
+                                    <div class="l4-hp-fill" id="l4-player-hp-bar" style="width:100%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Character (Inheritance) -->
+                        <div class="l4-section">
+                            <div class="l4-section-title">① Select Character <span>Inheritance</span></div>
+                            <div class="l4-card-grid" id="l4-char-selector">
+                                <!-- Built by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Attack Strategy (Polymorphism) -->
+                        <div class="l4-section">
+                            <div class="l4-section-title">② Attack Strategy <span>Polymorphism</span></div>
+                            <div class="l4-card-grid" id="l4-strat-selector">
+                                <!-- Built by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Attribute Access (Encapsulation) -->
+                        <div class="l4-section">
+                            <div class="l4-section-title">③ Access Attribute <span>Encapsulation</span></div>
+                            <div class="l4-encap-row">
+                                <button class="l4-encap-btn" data-encap="getter" id="btn-encap-getter">
+                                    <span class="l4-encap-icon">🔒</span>
+                                    <span>
+                                        <span class="l4-encap-main">Use getHealth()</span>
+                                        <span class="l4-encap-code">player.getHealth()</span>
+                                    </span>
+                                </button>
+                                <button class="l4-encap-btn" data-encap="direct" id="btn-encap-direct">
+                                    <span class="l4-encap-icon">⚠️</span>
+                                    <span>
+                                        <span class="l4-encap-main">Direct Access</span>
+                                        <span class="l4-encap-code">player.health</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Hint box -->
+                        <div id="l4-hint-box" class="hidden"></div>
+
+                        <!-- Execute + Hint buttons -->
+                        <div class="l4-action-row">
+                            <button id="btn-l4-execute">⚔️ Execute Attack</button>
+                            <button id="btn-l4-hint">💡 OOP Hint</button>
+                        </div>
+
+                    </div><!-- /controls-col -->
+
+                    <!-- Battle Log Column -->
+                    <div class="l4-log-col">
+                        <div class="l4-log-header">📜 Battle Log</div>
+                        <div id="l4-battle-log"></div>
+                    </div>
+
+                </div><!-- /player-area -->
+            </div><!-- /battle-layout -->
+
+            <!-- Victory Overlay -->
+            <div id="l4-victory" class="l4-overlay hidden">
+                <div class="l4-overlay-card">
+                    <span class="l4-victory-icon">🏆</span>
+                    <h2>Boss Defeated!</h2>
+                    <span class="l4-victory-stars" id="l4-victory-stars">⭐⭐⭐</span>
+                    <div class="l4-victory-stats">
+                        <p><span>✨ XP Earned</span> <strong id="l4-victory-xp">60</strong></p>
+                        <p><span>🪙 Coins</span> <strong id="l4-victory-coins">30</strong></p>
+                        <p><span>🔒 Encap Violations</span> <strong id="l4-victory-encap">0</strong></p>
+                        <p><span>⚔️ Turns Taken</span> <strong id="l4-victory-turns">0</strong></p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-l4-continue">Continue to Quiz →</button>
+                </div>
+            </div>
+
+            <!-- Defeat Overlay -->
+            <div id="l4-defeat" class="l4-overlay hidden">
+                <div class="l4-overlay-card">
+                    <span class="l4-defeat-icon">💀</span>
+                    <h2>Defeated!</h2>
+                    <p>The boss adapted faster than you could respond.</p>
+                    <p>Survived <strong id="l4-defeat-turns">0</strong> turn(s).</p>
+                    <div class="l4-defeat-tip">
+                        💡 <strong>Tips to win:</strong><br>
+                        • Switch attack strategies every turn (Polymorphism)<br>
+                        • Always use getHealth() — never direct access<br>
+                        • Rotate characters to avoid shield penalty<br>
+                        • Use VoidBlast (GENERIC) against unknown forms
+                    </div>
+                    <button class="btn btn-adventure" id="btn-l4-retry">🔄 Try Again</button>
+                </div>
+            </div>
+
+        </div><!-- /screen-level4 -->
+
+        <!-- Level 5 Screen: OOP Tower Defense -->
+        <div id="screen-level5" class="screen">
+            <div class="l5-hud">
+                <button class="btn-icon" id="btn-level5-back">← Exit</button>
+                <h3>Level 5 – Code Wars: Tower Defense</h3>
+                <div class="l5-hud-stats">
+                    <div class="l5-stat"><span class="l5-stat-label">🏰 HP</span><span class="l5-stat-val" id="l5-hp">100</span></div>
+                    <div class="l5-stat"><span class="l5-stat-label">🪙 Coins</span><span class="l5-stat-val" id="l5-coins">80</span></div>
+                    <div class="l5-stat"><span class="l5-stat-label">🌊 Wave</span><span class="l5-stat-val" id="l5-wave">1</span>/5</div>
+                </div>
+                <button id="btn-l5-wave">▶ Start Wave 1</button>
+            </div>
+            <div class="l5-canvas-wrap">
+                <canvas id="l5-canvas"></canvas>
+            </div>
+            <div class="l5-shop">
+                <div class="l5-shop-row">
+                    <span class="l5-shop-label">🏗️ Place Tower:</span>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap" id="l5-shop-row"></div>
+                </div>
+                <div id="l5-info">Select a tower below, then click a ⬡ slot on the map to place it.</div>
+            </div>
+            <!-- Victory -->
+            <div id="l5-victory" class="l5-overlay hidden">
+                <div class="l5-overlay-card">
+                    <span class="l5-win-icon">🏆</span>
+                    <h2>Codebase Defended!</h2>
+                    <p style="color:var(--text-secondary);margin-bottom:4px">All 5 waves defeated. Your OOP towers held the line!</p>
+                    <div class="l5-win-stats">
+                        <p><span>✨ XP Earned</span><strong id="l5-win-xp">70</strong></p>
+                        <p><span>🪙 Coins</span><strong id="l5-win-coins">35</strong></p>
+                        <p><span>🏰 Codebase HP</span><strong id="l5-win-hp">100</strong></p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-l5-victory">Continue to Quiz →</button>
+                </div>
+            </div>
+            <!-- Defeat -->
+            <div id="l5-defeat" class="l5-overlay hidden">
+                <div class="l5-overlay-card">
+                    <span class="l5-lose-icon">💥</span>
+                    <h2>Codebase Corrupted!</h2>
+                    <p>The bugs broke through your defenses.</p>
+                    <div class="l5-defeat-tips">
+                        💡 <strong>Tips:</strong><br>
+                        • 🔒 Encapsulation Tower → stops PublicField bugs<br>
+                        • 🧬 Inheritance Tower → splash vs CopyPaste bugs<br>
+                        • 🎭 Polymorphism Tower → pierces InstanceofChain shields<br>
+                        • 🔮 Abstraction Tower → slows all enemies<br>
+                        • 📋 Interface Tower → AoE, defeats GodClass boss
+                    </div>
+                    <button class="btn btn-adventure" id="btn-l5-retry">🔄 Try Again</button>
+                </div>
+            </div>
+        </div><!-- /screen-level5 -->
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="popup hidden">
+            <div class="popup-content">
+                <h3>⚙️ Settings</h3>
+                <button class="btn btn-secondary" id="btn-logout">🚪 Logout</button>
+                <button class="btn btn-link" id="btn-settings-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

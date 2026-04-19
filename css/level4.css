@@ -1,0 +1,665 @@
+/* ============================================
+   LEVEL 4 – ADAPTIVE AI BOSS BATTLE
+   ============================================ */
+
+/* ---- Screen Base ---- */
+#screen-level4 {
+    background: var(--bg-dark);
+    overflow: hidden;
+}
+
+/* ============================================
+   HUD
+   ============================================ */
+.l4-hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px var(--gap-lg);
+    background: rgba(10, 10, 20, 0.95);
+    border-bottom: 2px solid rgba(136, 68, 204, 0.4);
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.l4-hud h3 {
+    font-family: var(--font-heading);
+    color: var(--gold);
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+}
+
+.l4-turn-badge {
+    background: rgba(136, 68, 204, 0.15);
+    border: 1px solid rgba(136, 68, 204, 0.4);
+    color: #cc88ff;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-family: var(--font-heading);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* ============================================
+   BATTLE LAYOUT — flex column, two rows
+   ============================================ */
+.l4-battle-layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ============================================
+   BOSS AREA (top ~38%)
+   ============================================ */
+.l4-boss-area {
+    flex: 0 0 38%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-lg);
+    padding: var(--gap-md) var(--gap-lg);
+    position: relative;
+    transition: background 0.6s ease;
+    border-bottom: 2px solid rgba(255,255,255,0.06);
+}
+
+/* Form-based background glow */
+.l4-boss-area.boss-fire {
+    background: radial-gradient(ellipse at center, rgba(204,51,0,0.18) 0%, rgba(10,10,20,0.95) 70%);
+}
+.l4-boss-area.boss-ice {
+    background: radial-gradient(ellipse at center, rgba(68,136,255,0.18) 0%, rgba(10,10,20,0.95) 70%);
+}
+.l4-boss-area.boss-shadow {
+    background: radial-gradient(ellipse at center, rgba(136,68,204,0.22) 0%, rgba(10,10,20,0.95) 70%);
+}
+
+/* Boss sprite */
+.l4-boss-sprite-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+#l4-boss-emoji {
+    font-size: 5rem;
+    display: block;
+    animation: bossPulse 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px currentColor);
+    line-height: 1;
+}
+
+@keyframes bossPulse {
+    0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 18px rgba(255,255,255,0.3)); }
+    50%       { transform: scale(1.06) translateY(-5px); filter: drop-shadow(0 0 30px rgba(255,255,255,0.55)); }
+}
+
+.l4-boss-name-tag {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    color: #cc88ff;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* Boss HP bar */
+.l4-boss-hp-block {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 420px;
+}
+
+.l4-hp-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.l4-hp-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    letter-spacing: 0.5px;
+}
+
+.l4-hp-val {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+}
+
+.l4-hp-track {
+    width: 100%;
+    height: 16px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.l4-hp-fill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.5s ease, background 0.6s ease;
+}
+
+#l4-boss-hp-bar {
+    background: var(--fire-red);
+}
+
+#l4-player-hp-bar {
+    background: var(--emerald);
+}
+
+/* Boss shield badge */
+#l4-boss-shield {
+    font-size: 0.78rem;
+    color: #aaddff;
+    background: rgba(68,136,255,0.15);
+    border: 1px solid rgba(68,136,255,0.3);
+    border-radius: 12px;
+    padding: 3px 10px;
+    display: inline-block;
+    animation: shieldGlow 1.4s ease-in-out infinite;
+}
+
+@keyframes shieldGlow {
+    0%, 100% { box-shadow: 0 0 6px rgba(68,136,255,0.3); }
+    50%       { box-shadow: 0 0 14px rgba(68,136,255,0.6); }
+}
+
+/* ============================================
+   PLAYER AREA (bottom ~62%) — 2-column layout
+   ============================================ */
+.l4-player-area {
+    flex: 1;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* Left column: controls */
+.l4-controls-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    padding: var(--gap-md);
+    overflow-y: auto;
+    min-width: 0;
+}
+
+/* Right column: battle log */
+.l4-log-col {
+    width: 280px;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Player HP row */
+.l4-player-hp-row {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+}
+
+.l4-player-avatar {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.l4-player-hp-block {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ============================================
+   SELECTION SECTIONS
+   ============================================ */
+.l4-section {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,200,50,0.1);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+}
+
+.l4-section-title {
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.l4-section-title span {
+    background: rgba(240,165,0,0.12);
+    border: 1px solid rgba(240,165,0,0.3);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.65rem;
+    color: #ffc533;
+}
+
+/* Character & Strategy card grids */
+.l4-card-grid {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.l4-char-card,
+.l4-strat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    min-width: 70px;
+    text-align: center;
+    position: relative;
+}
+
+.l4-char-card:hover,
+.l4-strat-card:hover {
+    background: rgba(240,165,0,0.07);
+    border-color: rgba(240,165,0,0.4);
+    transform: translateY(-2px);
+}
+
+.l4-char-card.selected,
+.l4-strat-card.selected {
+    background: rgba(240,165,0,0.12);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(240,165,0,0.25);
+    transform: translateY(-2px);
+}
+
+.l4-card-emoji {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.l4-card-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+}
+
+.l4-card-sub {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    font-family: 'Courier New', monospace;
+}
+
+.l4-generic-tag {
+    display: inline-block;
+    font-size: 0.55rem;
+    background: rgba(68,204,68,0.2);
+    color: var(--emerald);
+    border: 1px solid rgba(68,204,68,0.3);
+    border-radius: 3px;
+    padding: 0 4px;
+    margin-left: 3px;
+    vertical-align: middle;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+/* Encapsulation choice */
+.l4-encap-row {
+    display: flex;
+    gap: 8px;
+}
+
+.l4-encap-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    font-family: var(--font-body);
+}
+
+.l4-encap-btn:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.l4-encap-btn[data-encap="getter"].selected {
+    background: rgba(68,204,68,0.1);
+    border-color: var(--emerald);
+    box-shadow: 0 0 10px rgba(68,204,68,0.2);
+}
+
+.l4-encap-btn[data-encap="direct"].selected {
+    background: rgba(204,51,0,0.1);
+    border-color: var(--fire-red);
+    box-shadow: 0 0 10px rgba(204,51,0,0.2);
+}
+
+.l4-encap-icon {
+    font-size: 1.1rem;
+}
+
+.l4-encap-main {
+    font-weight: 600;
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+}
+
+.l4-encap-code {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* Action buttons row */
+.l4-action-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+#btn-l4-execute {
+    flex: 1;
+    background: linear-gradient(135deg, #8844cc, #aa55ff);
+    color: #fff;
+    border: 1px solid #aa55ff;
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+#btn-l4-execute:hover {
+    box-shadow: 0 0 22px rgba(136,68,204,0.55);
+    transform: scale(1.02);
+}
+
+#btn-l4-hint {
+    background: rgba(240,165,0,0.08);
+    border: 1px solid rgba(240,165,0,0.3);
+    color: var(--gold);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#btn-l4-hint:hover {
+    background: rgba(240,165,0,0.15);
+    box-shadow: 0 0 10px rgba(240,165,0,0.2);
+}
+
+/* Hint Box */
+#l4-hint-box {
+    background: rgba(240,165,0,0.08);
+    border: 1px solid rgba(240,165,0,0.25);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    color: var(--gold);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    animation: hintAppear 0.3s ease-out;
+}
+
+@keyframes hintAppear {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.l4-hint-fade {
+    animation: hintFade 5s ease forwards;
+}
+
+@keyframes hintFade {
+    0%   { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ============================================
+   BATTLE LOG
+   ============================================ */
+.l4-log-header {
+    padding: 10px 12px;
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+}
+
+#l4-battle-log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.l4-log-line {
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    padding: 5px 8px;
+    background: rgba(255,255,255,0.02);
+    border-left: 2px solid rgba(136,68,204,0.3);
+    border-radius: 0 4px 4px 0;
+    margin: 0;
+    animation: logSlideIn 0.2s ease-out;
+}
+
+@keyframes logSlideIn {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ============================================
+   OVERLAYS — Victory & Defeat
+   ============================================ */
+.l4-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: l4FadeIn 0.3s ease-out;
+}
+
+.l4-overlay.hidden { display: none !important; }
+
+@keyframes l4FadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.l4-overlay-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 42px 40px;
+    text-align: center;
+    max-width: 440px;
+    width: 90%;
+    animation: l4CardIn 0.35s ease-out;
+}
+
+@keyframes l4CardIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+/* Victory card */
+#l4-victory .l4-overlay-card {
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 60px rgba(240,165,0,0.35);
+}
+
+#l4-victory .l4-overlay-card h2 {
+    font-family: var(--font-heading);
+    color: var(--gold);
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.l4-victory-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 14px;
+    animation: victoryBounce 0.6s ease-out;
+}
+
+@keyframes victoryBounce {
+    0%   { transform: scale(0.5); opacity: 0; }
+    70%  { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.l4-victory-stars {
+    font-size: 2rem;
+    letter-spacing: 4px;
+    display: block;
+    margin: 10px 0 16px;
+}
+
+.l4-victory-stats {
+    background: rgba(240,165,0,0.06);
+    border: 1px solid rgba(240,165,0,0.2);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.l4-victory-stats p {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.l4-victory-stats p strong {
+    color: var(--text-primary);
+}
+
+/* Defeat card */
+#l4-defeat .l4-overlay-card {
+    border: 2px solid var(--fire-red);
+    box-shadow: 0 0 60px rgba(204,51,0,0.3);
+}
+
+#l4-defeat .l4-overlay-card h2 {
+    font-family: var(--font-heading);
+    color: var(--fire-red);
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.l4-defeat-icon {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+#l4-defeat p {
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    line-height: 1.5;
+    font-size: 0.88rem;
+}
+
+.l4-defeat-tip {
+    background: rgba(204,51,0,0.07);
+    border: 1px solid rgba(204,51,0,0.25);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin: 14px 0 20px;
+    font-size: 0.8rem;
+    color: #ff8866;
+    text-align: left;
+    line-height: 1.5;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 680px) {
+    .l4-player-area {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .l4-log-col {
+        width: 100%;
+        height: 180px;
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        flex-shrink: 0;
+    }
+
+    .l4-boss-area {
+        flex: 0 0 auto;
+        padding: var(--gap-sm) var(--gap-md);
+    }
+
+    #l4-boss-emoji { font-size: 3.2rem; }
+
+    .l4-card-grid { gap: 6px; }
+
+    .l4-char-card, .l4-strat-card {
+        min-width: 60px;
+        padding: 6px 8px;
+    }
+
+    .l4-overlay-card { padding: 28px 20px; }
+}
