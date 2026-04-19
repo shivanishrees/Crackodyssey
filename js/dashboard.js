@@ -52,7 +52,7 @@ export function refreshDashboard() {
 
     // Progress
     const completed = getCompletedLevelsCount();
-    document.getElementById('dash-levels-done').textContent = `${completed} / 5`;
+    document.getElementById('dash-levels-done').textContent = `${completed} / 6`;
 
     const mazePercent = getOverallMazePercent();
     document.getElementById('dash-maze-progress').style.width = `${mazePercent}%`;

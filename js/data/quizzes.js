@@ -582,5 +582,121 @@ export const QUIZZES = {
             },
         ],
     },
+
+    6: {
+        title: 'Level 6 – Code Ninja Quiz',
+        questions: [
+            {
+                question: 'Q1 — In the Code Ninja engine, you used a "Guard Clause" to check for danger first (`if (enemyAhead) return "HIDE";`). What is the primary benefit of Guard Clauses?',
+                options: [
+                    'A) They make the code run slower so you can see the animation.',
+                    'B) They handle edge cases early, keeping the main logic flat and avoiding deep nested if/else blocks.',
+                    'C) They protect your variables from being changed by other classes.',
+                    'D) They automatically create new instances of objects.',
+                ],
+                correct: 1,
+                explanation: 'Guard clauses are an early-exit strategy. By handling exceptions or specific conditions at the top of a function, you avoid nesting your primary logic deep inside `else` blocks, making the code highly readable.',
+            },
+            {
+                question: 'Q2 — The `decideAction(state)` function required you to always include `return "RUN";` at the very end. Why is this important?',
+                options: [
+                    'A) To provide a "Default Fallback" action in case no specific `if` conditions are met.',
+                    'B) Because JavaScript requires every function to return a string.',
+                    'C) To override the parent class method.',
+                    'D) To create an infinite loop.',
+                ],
+                correct: 0,
+                explanation: 'A default return acts as a safety net. If the Ninja isn\'t facing an obstacle or an enemy, the function falls through the `if` statements and safely returns the default "RUN" action.',
+            },
+            {
+                question: 'Q3 — We grouped the boolean flags into a single `state` object (`state.enemyAhead`, `state.obstacleAhead`). Why is passing a single object better than passing multiple individual boolean arguments?',
+                options: [
+                    'A) It makes the code execute faster.',
+                    'B) It hides the data securely (Encapsulation).',
+                    'C) It keeps the function signature clean and allows you to add new state variables later without breaking existing code.',
+                    'D) It prevents the use of Guard Clauses.',
+                ],
+                correct: 2,
+                explanation: 'Passing a configuration or state object means if you add a new property later (like `state.pitAhead`), you don\'t have to change the `function(a, b, c, d)` signature everywhere it is called.',
+            },
+            {
+                question: 'Q4 — If you wrote `if (state.enemyAhead == true)` instead of just `if (state.enemyAhead)`, what is the issue?',
+                options: [
+                    'A) It will throw a syntax error.',
+                    'B) It is redundant because boolean flags already evaluate to true or false.',
+                    'C) It breaks the default return.',
+                    'D) It creates a memory leak.',
+                ],
+                correct: 1,
+                explanation: 'Clean code relies on truthy evaluation. Since `enemyAhead` is already a boolean, comparing it to `true` is unnecessary and adds visual clutter.',
+            },
+            {
+                question: 'Q5 — In the game engine, `Entity`, `Obstacle`, and `Enemy` classes were used. An Obstacle requires JUMP, and an Enemy requires HIDE. What OOP concept allows the engine to treat them as generic objects while enforcing specific interactions?',
+                options: [
+                    'A) Encapsulation',
+                    'B) Polymorphism',
+                    'C) Constructor Overloading',
+                    'D) Abstract Classes',
+                ],
+                correct: 1,
+                explanation: 'Polymorphism allows different objects (Obstacles and Enemies) to be treated uniformly by the engine (e.g., tracking them in a single array) while responding differently to player actions.',
+            },
+            {
+                question: 'Q6 — What is the architectural problem with deep "Nested Else" statements?',
+                options: [
+                    'A) They are impossible to compile in modern JavaScript.',
+                    'B) They create an "Arrow Anti-Pattern", pushing code far to the right and making it very difficult to read or maintain.',
+                    'C) They run significantly slower than single `if` statements.',
+                    'D) They automatically convert booleans to strings.',
+                ],
+                correct: 1,
+                explanation: 'The Arrow Anti-Pattern happens when nested `if/else` blocks indent the code so far to the right it looks like a wedge. It makes tracing the logic flow very hard for developers.',
+            },
+            {
+                question: 'Q7 — When the ninja executes a `"HIDE"` action successfully, he bypasses the enemy. The specific implementation of hiding is hidden inside the Engine, while you just return a string. This demonstrates:',
+                options: [
+                    'A) Abstraction',
+                    'B) Inheritance',
+                    'C) Polymorphism',
+                    'D) Liskov Substitution',
+                ],
+                correct: 0,
+                explanation: 'Abstraction hides complex backend implementation details (how the canvas renders hiding, bounding box manipulation) behind a simple interface (returning the string "HIDE").',
+            },
+            {
+                question: 'Q8 — You were forced to write linear flow code (Danger -> Obstacle -> Default). Which of these represents a break in linear flow?',
+                options: [
+                    'A) A guard clause.',
+                    'B) A fallback return.',
+                    'C) Using a `goto` statement to jump to a different part of the file.',
+                    'D) Grouping variables into an object.',
+                ],
+                correct: 2,
+                explanation: 'Linear flow means code executes top-to-bottom predictably. `goto` statements (or overly complex recursive loops) break this flow, making the code unpredictable and hard to follow (spaghetti code).',
+            },
+            {
+                question: 'Q9 — The engine validates your code by checking if it contains `return "RUN"`. Why might a static analysis tool do this in the real world?',
+                options: [
+                    'A) To prevent infinite loops.',
+                    'B) To enforce coding standards and ensure all code paths return a valid response.',
+                    'C) To compile JavaScript into C++.',
+                    'D) To minify the file size.',
+                ],
+                correct: 1,
+                explanation: 'Static analysis tools (like ESLint) scan code before it runs to enforce best practices, such as ensuring a function always returns a value on every possible execution path.',
+            },
+            {
+                question: 'Q10 — The `decideAction` function only handles decision making. It does not update the Ninja\'s x/y coordinates or draw the canvas. This is a perfect example of:',
+                options: [
+                    'A) The Open/Closed Principle',
+                    'B) The Liskov Substitution Principle',
+                    'C) The Interface Segregation Principle',
+                    'D) The Single Responsibility Principle (SRP)',
+                ],
+                correct: 3,
+                explanation: 'SRP states that a function or class should do one thing. `decideAction` is solely responsible for logic flow, leaving physics and rendering to other parts of the engine.',
+            },
+        ],
+    },
 };
 

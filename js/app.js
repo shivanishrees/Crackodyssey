@@ -11,6 +11,7 @@ import { initQuiz, startQuiz } from './quiz.js';
 import { initLevel3, startLevel3 } from './level3.js';
 import { initLevel4, startLevel4 } from './level4.js';
 import { initLevel5, startLevel5 } from './level5.js';
+import { initLevel6, startLevel6 } from './level6.js';
 
 // Screen IDs
 const SCREENS = {
@@ -22,6 +23,7 @@ const SCREENS = {
     'level3':     'screen-level3',
     'level4':     'screen-level4',
     'level5':     'screen-level5',
+    'level6':     'screen-level6',
 };
 
 let currentScreen = 'start-gate';
@@ -59,6 +61,9 @@ function handleStartMaze(levelId) {
     } else if (levelId === 5) {
         navigateTo('level5');
         startLevel5();
+    } else if (levelId === 6) {
+        navigateTo('level6');
+        startLevel6();
     } else {
         navigateTo('maze');
         startLevel(levelId);
@@ -76,6 +81,11 @@ function handleLevel4Complete(levelId) {
 }
 
 function handleLevel5Complete(levelId) {
+    navigateTo('quiz');
+    startQuiz(levelId);
+}
+
+function handleLevel6Complete(levelId) {
     navigateTo('quiz');
     startQuiz(levelId);
 }
@@ -103,6 +113,7 @@ function init() {
     initLevel3(navigateTo, handleLevel3Complete);
     initLevel4(navigateTo, handleLevel4Complete);
     initLevel5(navigateTo, handleLevel5Complete);
+    initLevel6(navigateTo, handleLevel6Complete);
 
     // Check if already logged in
     if (isLoggedIn()) {

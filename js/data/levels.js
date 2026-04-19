@@ -172,5 +172,34 @@ export const LEVELS = {
         gridCols: 0, gridRows: 0, grid: [], rewards: [],
         startPos: { row: 0, col: 0 }, exitPos: { row: 0, col: 0 },
     },
+
+    6: {
+        id: 6,
+        name: 'Code Ninja: Logic Flow',
+        gridCols: 20,
+        gridRows: 1,
+        // 0: Empty, 1: Obstacle, 2: Enemy, 3: Goal
+        grid: [
+            0, 0, 1, 0, 0, 2, 0, 1, 1, 0, 0, 2, 0, 0, 1, 2, 0, 0, 0, 3
+        ],
+        rewards: [
+            { id: 'guard_clause', row: 0, col: 2, title: '🛡️ Guard Clauses', explanation: 'A Guard Clause handles edge cases (like danger) early and returns immediately, keeping the main logic flat.', example: 'if (danger) return "HIDE";' },
+            { id: 'default_return', row: 0, col: 5, title: '↩️ Default Return', explanation: 'Every function should have a fallback action if no specific conditions are met.', example: 'return "RUN"; // At the very end' },
+            { id: 'no_else', row: 0, col: 7, title: '🚫 Anti-Pattern: Nested Else', explanation: 'Instead of nesting if/else blocks, use multiple independent if-returns for cleaner logic flow.', example: 'if(A) return X;\nif(B) return Y;' },
+            { id: 'state_object', row: 0, col: 8, title: '📦 State Objects', explanation: 'Grouping variables into a single `state` object keeps function signatures clean.', example: 'function decide(state) { ... }' },
+            { id: 'early_exit', row: 0, col: 11, title: '🚪 Early Exit', explanation: 'Exiting a function as soon as a condition is met prevents unnecessary code from running.', example: 'if (done) return;' },
+            { id: 'boolean_flags', row: 0, col: 14, title: '🚩 Boolean Flags', explanation: 'Using explicit true/false flags like `enemyAhead` makes logic incredibly easy to read.', example: 'if (state.enemyAhead)' },
+            { id: 'linear_flow', row: 0, col: 15, title: '⬇️ Linear Flow', explanation: 'Code that reads straight down, step-by-step, is much easier to maintain than code that jumps around.', example: '1. Danger\n2. Obstacles\n3. Default' },
+            { id: 'clean_code', row: 0, col: 19, title: '🧼 Clean Code', explanation: 'You wrote beautiful, structured logic to guide the Ninja to safety!', example: 'Ninja Master!' },
+            { id: 'dummy9', row: 0, col: 19, title: '💎 Knowledge Gem', explanation: 'Extra gem.', example: '' },
+            { id: 'dummy10', row: 0, col: 19, title: '💎 Knowledge Gem', explanation: 'Extra gem.', example: '' },
+            { id: 'dummy11', row: 0, col: 19, title: '💎 Knowledge Gem', explanation: 'Extra gem.', example: '' },
+            { id: 'dummy12', row: 0, col: 19, title: '💎 Knowledge Gem', explanation: 'Extra gem.', example: '' },
+            { id: 'dummy13', row: 0, col: 19, title: '💎 Knowledge Gem', explanation: 'Extra gem.', example: '' },
+            { id: 'dummy14', row: 0, col: 19, title: '💎 Knowledge Gem', explanation: 'Extra gem.', example: '' },
+            { id: 'dummy15', row: 0, col: 19, title: '💎 Knowledge Gem', explanation: 'Extra gem.', example: '' },
+        ],
+        startPos: { row: 0, col: 0 }, exitPos: { row: 0, col: 19 },
+    },
 };
 
