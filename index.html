@@ -507,8 +507,38 @@
                     <span class="l5-shop-label">🏗️ Place Tower:</span>
                     <div style="display:flex;gap:8px;flex-wrap:wrap" id="l5-shop-row"></div>
                 </div>
-                <div id="l5-info">Select a tower below, then click a ⬡ slot on the map to place it.</div>
+            <!-- Welcome Modal -->
+            <div id="l5-welcome" class="l5-overlay">
+                <div class="l5-overlay-card" style="max-width: 500px; text-align: left;">
+                    <h2 style="text-align: center; color: #00aaff; margin-bottom: 20px;">🎮 How to Play</h2>
+                    <ol style="font-size: 16px; line-height: 1.8; margin-left: 20px;">
+                        <li><strong>Buy a Tower:</strong> Click one of the OOP Towers in the shop row at the bottom of the screen.</li>
+                        <li><strong>Place the Tower:</strong> Click on any of the grey hexagonal slots (⬡) on the map to place it.</li>
+                        <li><strong>Defend:</strong> Click 'Start Wave 1' to let the bugs in. Your towers will automatically fire at them!</li>
+                    </ol>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button class="btn btn-primary" id="btn-l5-welcome-got-it">Got it!</button>
+                    </div>
+                </div>
             </div>
+
+            <!-- Wave Intro Overlay -->
+            <div id="l5-wave-intro" class="l5-overlay hidden">
+                <div class="l5-overlay-card" style="max-width: 500px; text-align: left;">
+                    <h2 id="l5-wave-title" style="text-align: center; color: #ffaa00; margin-bottom: 15px;">Wave 1</h2>
+                    <p id="l5-wave-desc" style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+                        The PublicField bugs are attacking! They expose sensitive data.
+                    </p>
+                    <div style="background: #1e1e1e; padding: 15px; border-radius: 5px; border-left: 4px solid #00aaff;">
+                        <span style="font-size: 20px;">💡</span> <strong style="color: #00aaff;">Hint:</strong>
+                        <p id="l5-wave-hint" style="margin-top: 5px;">Place an <strong>Encapsulation Tower</strong>. It protects fields and stops these bugs effortlessly!</p>
+                    </div>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button class="btn btn-primary" id="btn-l5-start-wave-action">Let them come!</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Victory -->
             <div id="l5-victory" class="l5-overlay hidden">
                 <div class="l5-overlay-card">
@@ -567,14 +597,17 @@
                         <div id="l6-tutorial-guide" style="background: #0e305e; color: #fff; padding: 15px; border-bottom: 2px solid #00aaff; font-size: 14px; line-height: 1.4;">
                             <span style="font-size: 20px; float: left; margin-right: 10px;">💡</span>
                             <div id="l6-tutorial-text">
-                                <strong>Step 1: The Basics</strong><br>
-                                Let's get the Ninja moving! Inside the function, simply type <code>return "RUN";</code> and hit Run Simulation.
+                                <strong>Step 1: Inheritance & Overriding</strong><br>
+                                Let's get moving! You are creating a class that <code>extends NinjaBot</code>. Override the <code>decideAction()</code> method and simply type <code>return this.run();</code> inside.
                             </div>
                         </div>
                         <textarea id="l6-code-editor" spellcheck="false">
-function decideAction(state) {
-    
-    
+class MyNinja extends NinjaBot {
+
+    decideAction(state) {
+        
+        
+    }
 }
 </textarea>
                     </div>

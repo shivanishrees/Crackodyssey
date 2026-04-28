@@ -82,22 +82,36 @@ function startSimulation() {
     const userCode = document.getElementById('l6-code-editor').value;
     
     // Validate based on tutorial stage
-    if (tutorialStage === 0 && !userCode.includes('return "RUN"')) {
-        logTerminal(`> Tutorial Error: Please add \`return "RUN";\` to get the Ninja moving.`, 'err');
+    if (tutorialStage === 0 && !userCode.includes('return this.run();')) {
+        logTerminal(`> Tutorial Error: Please add \`return this.run();\` to get the Ninja moving.`, 'err');
         return;
     }
     
-    // We do NOT strictly validate JUMP/HIDE early so the user can fail naturally if they skip steps!
-    // But we still enforce the final RUN fallback if they've advanced.
-    if (tutorialStage > 0 && !userCode.includes('return "RUN"')) {
-        logTerminal(`> Validation Error: No default fallback action found. You must return "RUN" at the end.`, 'err');
+    if (tutorialStage > 0 && !userCode.includes('return this.run();')) {
+        logTerminal(`> Validation Error: No default fallback action found. You must return this.run() at the end.`, 'err');
         return;
     }
     
-    // Compile user code
+    if (!userCode.includes('class MyNinja extends NinjaBot')) {
+        logTerminal(`> Validation Error: You must define 'class MyNinja extends NinjaBot'.`, 'err');
+        return;
+    }
+    
+    // Compile user code with NinjaBot base class injected
     let botFunc;
     try {
-        botFunc = new Function('state', userCode + '\nreturn decideAction(state);');
+        const fullCode = `
+class NinjaBot {
+    hide() { return "HIDE"; }
+    jump() { return "JUMP"; }
+    run()  { return "RUN";  }
+    wait() { return "WAIT"; }
+}
+${userCode}
+const bot = new MyNinja();
+return bot.decideAction(state);
+`;
+        botFunc = new Function('state', fullCode);
         logTerminal('> Code compiled successfully.', 'succ');
     } catch (e) {
         logTerminal(`> Compiler Error: ${e.message}`, 'err');
@@ -112,10 +126,11 @@ function startSimulation() {
 function buildState() {
     let nextCell = ninjaPos + 1 < track.length ? track[ninjaPos + 1] : 0;
     
+    // Using encapsulated methods instead of raw properties
     return {
-        enemyAhead: nextCell === 2,
-        obstacleAhead: nextCell === 1,
-        safeToRun: nextCell === 0 || nextCell === 3
+        hasEnemy: () => nextCell === 2,
+        hasObstacle: () => nextCell === 1,
+        isSafe: () => nextCell === 0 || nextCell === 3
     };
 }
 
@@ -268,11 +283,11 @@ function updateTutorialUI() {
     if (!textEl) return;
     
     if (tutorialStage === 0) {
-        textEl.innerHTML = `<strong>Step 1: The Basics</strong><br>Let's get the Ninja moving! Inside the function, simply type <code>return "RUN";</code> and hit Run Simulation.`;
+        textEl.innerHTML = `<strong>Step 1: Inheritance & Overriding</strong><br>Let's get moving! You are creating a class that <code>extends NinjaBot</code>. Override the <code>decideAction()</code> method and simply type <code>return this.run();</code> inside.`;
     } else if (tutorialStage === 1) {
-        textEl.innerHTML = `<strong>Step 2: Guard Clauses</strong><br>Ouch! You hit a spike. Before running, check if there is an obstacle.<br>Above your RUN command, add: <code>if (state.obstacleAhead) { return "JUMP"; }</code>`;
+        textEl.innerHTML = `<strong>Step 2: Guard Clauses & Encapsulation</strong><br>Ouch! Before running, check if there is an obstacle using the state object's encapsulated method.<br>Above your RUN command, add: <code>if (state.hasObstacle()) { return this.jump(); }</code>`;
     } else if (tutorialStage === 2) {
-        textEl.innerHTML = `<strong>Step 3: Handle Danger First</strong><br>An enemy caught you! You must prioritize hiding from danger.<br>At the VERY TOP of your function, add: <code>if (state.enemyAhead) { return "HIDE"; }</code>`;
+        textEl.innerHTML = `<strong>Step 3: Handle Danger First</strong><br>An enemy caught you! You must prioritize hiding from danger.<br>At the VERY TOP of your method, add: <code>if (state.hasEnemy()) { return this.hide(); }</code>`;
     }
 }
 

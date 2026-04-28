@@ -94,6 +94,20 @@ export function initLevel5(navigateTo, onCompleteFn) {
         document.getElementById('l5-defeat').classList.add('hidden');
         startLevel5();
     });
+    
+    const waveStartBtn = document.getElementById('btn-l5-start-wave-action');
+    if (waveStartBtn) {
+        waveStartBtn.addEventListener('click', actuallyStartWave);
+    }
+    
+    // Welcome dismissal
+    const welcomeBtn = document.getElementById('btn-l5-welcome-got-it');
+    if (welcomeBtn) {
+        welcomeBtn.addEventListener('click', () => {
+            document.getElementById('l5-welcome').classList.add('hidden');
+        });
+    }
+
     canvas.addEventListener('click', onCanvasClick);
     canvas.addEventListener('mousemove', onCanvasHover);
     buildShop();
@@ -104,6 +118,9 @@ export function startLevel5() {
     towers = []; enemies = []; slotUsed = new Array(SLOTS.length).fill(false);
     shots = []; spawnQueue = []; spawnTimer = 0;
     selectedType = null; infoMsg = 'Select a tower below, then click a ⬡ slot on the map.';
+    
+    document.getElementById('l5-welcome').classList.remove('hidden');
+    document.getElementById('l5-wave-intro').classList.add('hidden');
     document.getElementById('l5-victory').classList.add('hidden');
     document.getElementById('l5-defeat').classList.add('hidden');
     updateHUD();
@@ -127,7 +144,8 @@ function buildShop() {
 function selectTower(key) {
     selectedType = key;
     const td = TDEFS[key];
-    infoMsg = `${td.e} ${td.name} — Cost: 🪙${td.cost} | Range: ${td.range} | DMG: ${td.dmg} | 💡 ${td.fact}`;
+    const prefEnemyName = EDEFS[td.pref] ? EDEFS[td.pref].name : td.pref;
+    infoMsg = `${td.e} ${td.name} — Cost: 🪙${td.cost} | Range: ${td.range} | DMG: ${td.dmg} | Best Against: ${prefEnemyName} | 💡 ${td.fact}`;
     document.querySelectorAll('.l5-shop-btn').forEach(b => b.classList.toggle('selected', b.dataset.key === key));
     setInfo(infoMsg);
 }
@@ -140,6 +158,37 @@ function setInfo(msg) {
 // ---- Wave Management ----
 function startWave() {
     if (phase !== 'shop' || waveIdx >= WAVES.length) return;
+    
+    // Pause and show the dynamic Wave Intro modal
+    const waveIntro = document.getElementById('l5-wave-intro');
+    const wTitle = document.getElementById('l5-wave-title');
+    const wDesc = document.getElementById('l5-wave-desc');
+    const wHint = document.getElementById('l5-wave-hint');
+    
+    wTitle.textContent = `Wave ${waveIdx + 1}`;
+    
+    if (waveIdx === 0) {
+        wDesc.textContent = "The PublicField bugs are attacking! They expose sensitive data directly.";
+        wHint.innerHTML = "Place an <strong>Encapsulation Tower</strong>. It protects fields and stops these bugs effortlessly!";
+    } else if (waveIdx === 1) {
+        wDesc.textContent = "CopyPaste bugs are multiplying! They represent duplicated code that is hard to maintain.";
+        wHint.innerHTML = "Place an <strong>Inheritance Tower</strong>! Its splash damage hits duplicated bugs at once.";
+    } else if (waveIdx === 2) {
+        wDesc.textContent = "InstanceofChain bugs have heavy shields. They represent messy type-checking code.";
+        wHint.innerHTML = "Place a <strong>Polymorphism Tower</strong>! It dynamically pierces their shields.";
+    } else if (waveIdx === 3) {
+        wDesc.textContent = "TightCoupling bugs are incredibly fast and resistant.";
+        wHint.innerHTML = "Place an <strong>Abstraction Tower</strong>. It decouples the code and slows all enemies in its massive radius.";
+    } else if (waveIdx === 4) {
+        wDesc.textContent = "The GodClass Boss has arrived! It's a massive, bloated object doing everything.";
+        wHint.innerHTML = "Place an <strong>Interface Tower</strong>! It establishes clear contracts and deals massive damage.";
+    }
+    
+    waveIntro.classList.remove('hidden');
+}
+
+function actuallyStartWave() {
+    document.getElementById('l5-wave-intro').classList.add('hidden');
     phase = 'wave';
     document.getElementById('btn-l5-wave').disabled = true;
     buildSpawnQueue(WAVES[waveIdx]);
@@ -276,7 +325,7 @@ function render(ts) {
     ctx.clearRect(0, 0, CW, CH);
     drawBg();
     drawPath();
-    drawSlots();
+    drawSlots(ts);
     drawShots();
     drawTowers();
     drawEnemies();
@@ -309,10 +358,22 @@ function drawPath() {
     ctx.setLineDash([]);
 }
 
-function drawSlots() {
+function drawSlots(ts) {
     SLOTS.forEach((s, i) => {
         if (slotUsed[i]) return;
         const hover = i === hovSlot;
+        
+        // Pulsing effect if a tower is currently selected in the shop
+        let pulseRadius = 0;
+        if (selectedType) {
+            pulseRadius = Math.sin(ts / 150) * 4;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, 20 + pulseRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(0, 255, 0, ${0.4 + Math.sin(ts / 150) * 0.3})`;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+        
         ctx.beginPath();
         ctx.arc(s.x, s.y, hover ? 22 : 18, 0, Math.PI * 2);
         ctx.strokeStyle = hover ? '#f0a500' : 'rgba(240,165,0,0.35)';
